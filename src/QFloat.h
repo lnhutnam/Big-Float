@@ -29,29 +29,64 @@
 
 // Structure
 struct _qfloat8_ {
+private:
 	// sign: 1 bit - exponent: 4 bit - fraction: 3 bit
 	unsigned char data = 0;
+public:
+	// Overloading arithemic operator
+	_qfloat8_& operator+(const _qfloat8_&);
+	_qfloat8_& operator-(const _qfloat8_&);
+	_qfloat8_& operator*(const _qfloat8_&);
+	_qfloat8_& operator/(const _qfloat8_&);
 };
 
 struct _qfloat16_ {
+private:
 	// sign: 1 bit - exponent: 5 bit - fraction: 10 bit
 	unsigned char data[2] = { 0 };
+public:
+	// Overloading arithemic operator
+	_qfloat16_& operator+(const _qfloat16_&);
+	_qfloat16_& operator-(const _qfloat16_&);
+	_qfloat16_& operator*(const _qfloat16_&);
+	_qfloat16_& operator/(const _qfloat16_&);
 };
 
 struct _qfloat32_ {
+private:
 	// sign: 1 bit - exponent: 8 bit - fraction: 23 bit
 	unsigned char data[4] = { 0 };
+public:
+	// Overloading arithemic operator
+	_qfloat32_& operator+(const _qfloat32_&);
+	_qfloat32_& operator-(const _qfloat32_&);
+	_qfloat32_& operator*(const _qfloat32_&);
+	_qfloat32_& operator/(const _qfloat32_&);
 };
 
 struct _qfloat64_ {
+private:
 	// sign: 1 bit - exponent: 11 bit - fraction: 52 bit
 	unsigned char data[8] = { 0 };
+public:
+	// Overloading arithemic operator
+	_qfloat64_& operator+(const _qfloat64_&);
+	_qfloat64_& operator-(const _qfloat64_&);
+	_qfloat64_& operator*(const _qfloat64_&);
+	_qfloat64_& operator/(const _qfloat64_&);
 };
 
 
 struct _qfloat80_ {
+private:
 	// sign: 1 bit - exponent: 15 bit - fraction: 64 bit
 	unsigned char data[10] = { 0 };
+public:
+	// Overloading arithemic operator
+	_qfloat80_& operator+(const _qfloat80_&);
+	_qfloat80_& operator-(const _qfloat80_&);
+	_qfloat80_& operator*(const _qfloat80_&);
+	_qfloat80_& operator/(const _qfloat80_&);
 };
 
 struct _qfloat128_ {
