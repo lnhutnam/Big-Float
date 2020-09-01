@@ -52,7 +52,7 @@ private:
 	int data[4] = { 0 };
 private:
 	std::string realMultiplyTwo(std::string real);
-	std::string realDivisionTwo(std::string real, bool isDivReal = true);
+	std::string realDivisionTwo(std::string real, bool isDivReal);
 	bool isNaN();
 	bool isInf(bool& negative);
 	bool isZero();
@@ -61,7 +61,7 @@ private:
 	void setInf(bool negative);
 	void setZero();
 public:
-	void scanQfloat(std::string str = "");
+	void scanQfloat(std::string str);
 	std::string printQfloat();
 	_qfloat128_ binToDec(std::string bit);
 	std::string decToBin();
@@ -142,12 +142,12 @@ std::string _round(std::string s, int numberRound) {
 	}
 
 	// if the dot doesn't exist or numberRound > length - (dot + 2)
-	if (dot == -1 || s.length() - 1 - dot < numberRound + 1) {
+	if (dot == -1 || s.length() - 1 - dot < (numberRound + 1)) {
 		return s;
 	}
 
-	std::string result = s.substr(0, numberRound + 1 + dot);
-	int k = s[numberRound + 1 + dot] - '0';
+	std::string result = s.substr(0, (numberRound + 1 + dot));
+	int k = s[(numberRound + 1 + dot)] - '0';
 	bool flag = false;
 	while (k > 4) {
 		if (result[result.length() - 1] == '.') {
@@ -170,7 +170,7 @@ std::string _round(std::string s, int numberRound) {
 			// remove sign
 			result.erase(0, 1);
 			int z;
-			for (z = result.length() - 1; z >= -1; z--)
+			for (z = (int)result.length() - 1; z >= -1; z--)
 			{
 				if (z == -1 || result[z] < '9')
 				{
@@ -196,7 +196,7 @@ std::string _round(std::string s, int numberRound) {
 		else {
 			// plus one
 			int z;
-			for (z = result.length() - 1; z >= -1; z--)
+			for (z = (int)result.length() - 1; z >= -1; z--)
 			{
 				if (z == -1 || result[z] < '9')
 				{

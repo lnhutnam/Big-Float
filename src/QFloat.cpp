@@ -2,11 +2,88 @@
 
 // Private method
 std::string _qfloat128_::realMultiplyTwo(std::string real) {
-
+	// Initialization
+	int rememberVar = 0;
+	int sum = 0;
+	std::string result = "";
+	// Multi
+	for (int i = (int)real.length() - 1; i >= 0; i--) {
+		if (real[i] == '.') {
+			result = "." + result;
+			continue;
+		}
+		sum = rememberVar + (real[i] - '0') * 2;
+		result = char('0' + sum % 10) + result;
+		rememberVar = sum / 10;
+	}
+	if (rememberVar > 0) {
+		result = char(rememberVar + '0') + result;
+	}
+	int count = 0;
+	for (int i = 0; i < (int)real.length(); i++) {
+		if (real[i] == '0' || real[i] == '.') {
+			count = count + 1;
+		}
+		else {
+			break;
+		}
+	}
+	if (count == (int)real.length()) {
+		result = "0";
+	}
+	if (result[0] == '.') {
+		result = '0' + result;
+	}
+	return result;
 }
 
-std::string _qfloat128_::realDivisionTwo(std::string real, bool isDivReal = true) {
+std::string _qfloat128_::realDivisionTwo(std::string real, bool isDivReal) {
+	// Initialization
+	int rememberVar = 0;
+	int sum = 0;
+	bool check = false;
+	std::string result = "";
+	// Division
+	for (int i = 0; i < (int)real.length(); i++) {
+		if (real[i] == '.') {
+			result = result + ".";
+			check = true;
+			continue;
+		}
+		sum = rememberVar * 10 + real[i] - '0';
+		result += '0' + sum / 2;
+		rememberVar = sum % 2;
+	}
 
+	if (isDivReal && rememberVar > 0) {
+		if (check) {
+			result = result + "5";
+		}
+		else {
+			result = result + ".5";
+		}
+	}
+
+	while (result.length() > 1 && result[0] == '0') {
+		result.erase(0, 1);
+	}
+
+	int count = 0;
+	for (int i = 0; i < (int)real.length(); i++) {
+		if (real[i] == '0' || real[i] == '.') {
+			count = count + 1;
+		}
+		else {
+			break;
+		}
+	}
+	if (count == (int)real.length()) {
+		result = "0";
+	}
+	if (result[0] == '.') {
+		result = '0' + result;
+	}
+	return result;
 }
 
 bool _qfloat128_::isNaN() {
@@ -23,7 +100,7 @@ bool _qfloat128_::isInf(bool& negative) {
 	unsigned int sign = (this->data[0] >> 31) & 1;
 	int exponent = (this->data[0] >> 16) & ((1 << 15) - 1);
 	if (sign == 1) {
-		negative == true; // Negative infinity
+		negative = true; // Negative infinity
 	}
 	else if (sign == 0) {
 		negative = false; // Positive infinity
@@ -83,12 +160,12 @@ void _qfloat128_::setZero() {
 }
 
 // Public method
-void _qfloat128_::scanQfloat(std::string str = "") {
+void _qfloat128_::scanQfloat(std::string str) {
 	// Initialization for sure qfloat equal to zero
 	this->data[0] = this->data[1] = this->data[2] = this->data[3] = 0;
 	// Sign - Exponent - Fraction
-	char sign;
-	int exponent;
+	char sign = 0;
+	int exponent = 0;
 	std::string integerPart = "";
 	std::string decimalPart = "";
 	std::string fraction = "";
@@ -111,7 +188,7 @@ void _qfloat128_::scanQfloat(std::string str = "") {
 		if (str[i] == '.') {
 			checkIndexOfDot = true;
 			integerPart = str.substr(0, i);
-			decimalPart = str.substr(i + 1, str.length() - i - 1);
+			decimalPart = str.substr((i + 1), ((int)str.length() - i - 1));
 			break;
 		}
 	}
@@ -174,7 +251,7 @@ void _qfloat128_::scanQfloat(std::string str = "") {
 	}
 
 	if (fraction_01[0] == '1') {
-		exponent = fraction_01.length() - 1 + bias;
+		exponent = (int)fraction_01.length() - 1 + bias;
 		fraction = fraction_01 + fraction_02;
 		fraction.erase(0, 1);
 	}
@@ -301,7 +378,7 @@ std::string _qfloat128_::printQfloat() {
 		// add 1
 		if (fraction[i] == '1') {
 			int z;
-			for (z = result.length() - 1; z >= -1; z--)
+			for (z = (int)result.length() - 1; z >= -1; z--)
 			{
 				if (z == -1 || result[z] < '9')
 				{
@@ -327,7 +404,7 @@ std::string _qfloat128_::printQfloat() {
 	{
 		for (int i = 0; i < abs(exponent); i++)
 		{
-			result = realDivisionTwo(result);
+			result = realDivisionTwo(result, true);
 		}
 	}
 
@@ -390,6 +467,8 @@ _qfloat128_ _qfloat128_::binToDec(std::string bit) {
 			this->data[i / 32] = (temp << (31 - (i % 32))) | this->data[i / 32];
 		}
 	}
+
+	return *this;
 }
 
 std::string _qfloat128_::decToBin() {
@@ -406,18 +485,30 @@ std::string _qfloat128_::decToBin() {
 
 
 _qfloat128_& _qfloat128_::operator+(const _qfloat128_& qfloat) {
+	_qfloat128_ result;
+	result.setZero();
 
+	return result;
 }
 
 
 _qfloat128_& _qfloat128_::operator-(const _qfloat128_& qfloat) {
+	_qfloat128_ result;
+	result.setZero();
 
+	return result;
 }
 
 _qfloat128_& _qfloat128_::operator*(const _qfloat128_& qfloat) {
+	_qfloat128_ result;
+	result.setZero();
 
+	return result;
 }
 
 _qfloat128_& _qfloat128_::operator/(const _qfloat128_& qfloat) {
+	_qfloat128_ result;
+	result.setZero();
 
+	return result;
 }
