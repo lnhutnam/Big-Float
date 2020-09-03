@@ -1,6 +1,7 @@
 #include "QFloat.h"
 
 // Private method
+// Private method - binary128
 std::string _qfloat128_::realMultiplyTwo(std::string real) {
 	// Initialization
 	int rememberVar = 0;
@@ -86,6 +87,34 @@ std::string _qfloat128_::realDivisionTwo(std::string real, bool isDivReal) {
 	return result;
 }
 
+void _qfloat128_::turn_on_bit_at(int k) {
+	k = _QFLOAT_128_LENGTH - k - 1;
+	int i = k / 32, j = 32 - k % 32 - 1;
+	this->data[i] = (this->data[i] & ~(1U << j)) | (1 << j);
+}
+
+void _qfloat128_::turn_off_bit_at(int k) {
+	k = _QFLOAT_128_LENGTH - k - 1;
+	int i = k / 32, j = 32 - k % 32 - 1;
+	this->data[i] = (this->data[i] & ~(1U << j)) | (0 << j);
+}
+
+int _qfloat128_::get_bit_at(int k) {
+	k = _QFLOAT_128_LENGTH - k - 1;
+	int i = k / 32, j = 32 - k % 32 - 1;
+	return ((this->data[i] >> j) & 1U);
+}
+
+// Public method
+// Public method - binary128
+bool _qfloat128_::isSubNormal() {
+	for (int i = _QFLOAT_128_BIT_EXPONENT; i < _QFLOAT_128_BIT_EXPONENT + _QFLOAT_128_BIT_FRACTION; i++) {
+		if ()
+	}
+}
+
+int _qfloat128_::getSign() { return get_bit_at(_QFLOAT_128_LENGTH - 1); }
+
 bool _qfloat128_::isNaN() {
 	unsigned int Sign = (this->data[0] >> 31) & 1;
 	int Exponent = (this->data[0] >> 16) & ((1 << 15) - 1);
@@ -159,7 +188,6 @@ void _qfloat128_::setZero() {
 	this->data[0] = this->data[1] = this->data[2] = this->data[3];
 }
 
-// Public method
 void _qfloat128_::scanQfloat(std::string str) {
 	// Initialization for sure qfloat equal to zero
 	this->data[0] = this->data[1] = this->data[2] = this->data[3] = 0;
@@ -483,30 +511,32 @@ std::string _qfloat128_::decToBin() {
 	return bin;
 }
 
+_qfloat128_& _qfloat128_::operator+(_qfloat128_& qfloat) {
+	_qfloat128_ result;
+	result.setZero();
+	if (this->isZero() && !qfloat.isZero()) { return qfloat; }
+	if (!this->isZero() && qfloat.isZero()) { return *this;  }
+	if (this->isZero() && qfloat.isZero()) { return result;  }
 
-_qfloat128_& _qfloat128_::operator+(const _qfloat128_& qfloat) {
+
+	return result;
+}
+
+_qfloat128_& _qfloat128_::operator-(_qfloat128_& qfloat) {
 	_qfloat128_ result;
 	result.setZero();
 
 	return result;
 }
 
-
-_qfloat128_& _qfloat128_::operator-(const _qfloat128_& qfloat) {
+_qfloat128_& _qfloat128_::operator*(_qfloat128_& qfloat) {
 	_qfloat128_ result;
 	result.setZero();
 
 	return result;
 }
 
-_qfloat128_& _qfloat128_::operator*(const _qfloat128_& qfloat) {
-	_qfloat128_ result;
-	result.setZero();
-
-	return result;
-}
-
-_qfloat128_& _qfloat128_::operator/(const _qfloat128_& qfloat) {
+_qfloat128_& _qfloat128_::operator/(_qfloat128_& qfloat) {
 	_qfloat128_ result;
 	result.setZero();
 
