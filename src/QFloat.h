@@ -5,18 +5,23 @@
 #include <vector>
 
 // constant
+#define _QFLOAT_8_LENGTH 8
 #define _QFLOAT_8_BIT_EXPONENT 4
 #define _QFLOAT_8_BIT_FRACTION 3
 
+#define _QFLOAT_16_LENGTH 16
 #define _QFLOAT_16_BIT_EXPONENT 5
 #define _QFLOAT_16_BIT_FRACTION 10
 
+#define _QFLOAT_32_LENGTH 32
 #define _QFLOAT_32_BIT_EXPONENT 11
 #define _QFLOAT_32_BIT_FRACTION 52
 
+#define _QFLOAT_80_LENGTH 80
 #define _QFLOAT_80_BIT_EXPONENT 15
 #define _QFLOAT_80_BIT_FRACTION 64
 
+#define _QFLOAT_128_LENGTH 128
 #define _QFLOAT_128_BIT_EXPONENT 15
 #define _QFLOAT_128_BIT_FRACTION 112
 
@@ -96,6 +101,11 @@ private:
 private:
 	std::string realMultiplyTwo(std::string real);
 	std::string realDivisionTwo(std::string real, bool isDivReal);
+	void turn_on_bit_at(int k);
+	void turn_off_bit_at(int k);
+	int get_bit_at(int k);
+public:
+	bool isSubNormal();
 	bool isNaN();
 	bool isInf(bool& negative);
 	bool isZero();
@@ -103,17 +113,21 @@ private:
 	void setNaN();
 	void setInf(bool negative);
 	void setZero();
-public:
+	// get sign, get exponent, get fraction;
+	int getSign();
+	int getExponent();
+	int getFraction();
+
 	void scanQfloat(std::string str);
 	std::string printQfloat();
 	_qfloat128_ binToDec(std::string bit);
 	std::string decToBin();
 
 	// Overloading arithemic operator
-	_qfloat128_& operator+(const _qfloat128_&);
-	_qfloat128_& operator-(const _qfloat128_&);
-	_qfloat128_& operator*(const _qfloat128_&);
-	_qfloat128_& operator/(const _qfloat128_&);
+	_qfloat128_& operator+(_qfloat128_&);
+	_qfloat128_& operator-(_qfloat128_&);
+	_qfloat128_& operator*(_qfloat128_&);
+	_qfloat128_& operator/(_qfloat128_&);
 };
 
 template<typename T>
